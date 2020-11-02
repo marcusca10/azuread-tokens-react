@@ -11,16 +11,7 @@
         "skucode": {
             "type": "string"
         },
-        "repositoryUrl": {
-            "type": "string"
-        },
         "branch": {
-            "type": "string"
-        },
-        "appLocation": {
-            "type": "string"
-        },
-        "appArtifactLocation": {
             "type": "string"
         }
     },
@@ -32,11 +23,11 @@
             "location": "[resourceGroup().location]",
             "tags": {},
             "properties": {
-                "repositoryUrl": "[parameters('repositoryUrl')]",
+                "repositoryUrl": "https://github.com/marcusca10/azuread-tokendemo-react",
                 "branch": "[parameters('branch')]",
                 "buildProperties": {
-                    "appLocation": "[parameters('appLocation')]",
-                    "appArtifactLocation": "[parameters('appArtifactLocation')]"
+                    "appLocation": "/",
+                    "appArtifactLocation": "build"
                 }
             },
             "sku": {
