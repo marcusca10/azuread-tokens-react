@@ -5,14 +5,11 @@
         "name": {
             "type": "string"
         },
-        "sku": {
+        "repositoryUrl": {
             "type": "string"
         },
-        "skucode": {
-            "type": "string"
-        },
-        "branch": {
-            "type": "string"
+        "repositoryToken": {
+            "type": "securestring"
         }
     },
     "resources": [
@@ -23,16 +20,17 @@
             "location": "[resourceGroup().location]",
             "tags": {},
             "properties": {
-                "repositoryUrl": "https://github.com/marcusca10/azuread-tokens-react",
-                "branch": "[parameters('branch')]",
+                "repositoryUrl": "[parameters('repositoryUrl')]",
+                "repositoryToken": "[parameters('repositoryToken')]",
+                "branch": "main",
                 "buildProperties": {
                     "appLocation": "/",
                     "appArtifactLocation": "build"
                 }
             },
             "sku": {
-                "Tier": "[parameters('sku')]",
-                "Name": "[parameters('skuCode')]"
+                "Tier": "Free",
+                "Name": "Free"
             }
         }
     ]
