@@ -23,7 +23,7 @@
             "location": "[resourceGroup().location]",
             "tags": {},
             "properties": {
-                "repositoryUrl": "https://github.com/marcusca10/azuread-tokendemo-react",
+                "repositoryUrl": "https://github.com/marcusca10/azuread-tokens-react",
                 "branch": "[parameters('branch')]",
                 "buildProperties": {
                     "appLocation": "/",

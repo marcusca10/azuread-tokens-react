@@ -1,4 +1,4 @@
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmarcusca10%2Fazuread-tokens-react%2Fazure-deploy%2Fazuredeploy.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmarcusca10%2Fazuread-tokens-react%2Fmain%2Fazuredeploy.json)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
