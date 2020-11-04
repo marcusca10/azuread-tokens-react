@@ -49,10 +49,10 @@ const TokenComponentForm = (props) => {
 
         <Button variant="primary" onClick={props.signInButton_Click}>Sign In</Button>{' '}
         <Button variant="primary" onClick={props.profileButton_Click}>Profile</Button>{' '}
-        <Button variant="primary">People</Button>{' '}
-        <Button variant="primary">Groups</Button>{' '}
-        <Button variant="primary">API 1</Button>{' '}
-        <Button variant="primary">API 2</Button>{' '}
+        <Button variant="primary" onClick={props.peopleButton_Click}>People</Button>{' '}
+        <Button variant="primary" onClick={props.groupsButton_Click}>Groups</Button>{' '}
+        <Button variant="primary" onClick={props.api1Button_Click}>API 1</Button>{' '}
+        <Button variant="primary" onClick={props.api2Button_Click}>API 2</Button>{' '}
         <Button variant="primary" onClick={props.signOutButton_Click}>Sign Out</Button>{' '}
 
       </Form>

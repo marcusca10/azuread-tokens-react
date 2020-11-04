@@ -210,11 +210,18 @@ class TokenComponent extends Component {
                     this.apiService.fetchData(endpoint, authResponse.accessToken).then(
                         (apiResponse) => {
                             this.setState({resultDetails: this.parseTokenResult(apiResponse.data)});
+                        },
+                        (err) => {
+                            this.setState({resultDetails: null});
+                            this.showMessage('danger', 'Error', err.message)
+                            console.log(err);
                         }
                     )
                 }
             },
             (error) => {
+                this.setState({accessTokenDetails: null});
+                this.setState({resultDetails: null});
                 this.showMessage('danger', 'Error', error.message)
                 console.log(error);
             }
