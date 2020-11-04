@@ -24,7 +24,8 @@
                 "repositoryToken": "[parameters('repositoryToken')]",
                 "branch": "main",
                 "buildProperties": {
-                    "appLocation": "/",
+                    "appLocation": "app",
+                    "apiLocation": "api",
                     "appArtifactLocation": "build"
                 }
             },
