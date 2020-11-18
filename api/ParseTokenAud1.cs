@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -40,13 +39,34 @@ namespace Marcusca10.Samples.AzureAd.TokenFunction
                 return new UnauthorizedResult();
             }
 
+            log.Log(LogLevel.Information, $"Validated access token for account: {validationResult.MsalAccountId}.");
+
             #endregion
 
-            //string responseMessage = string.IsNullOrEmpty(validationResult.MsalAccountId)
-            //    ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-            //    : $"Hello, {validationResult.MsalAccountId}. This HTTP triggered function executed successfully.";
+            #region Catalog initialization
 
-            return new OkObjectResult(validationResult.Token);
+            var catalog = new CatalogItemModel[]
+            {
+                new CatalogItemModel(){
+                    Id = 1,
+                    Name = "Cephalocereus senilis",
+                    Status = "published"
+                },
+                new CatalogItemModel(){
+                    Id = 2,
+                    Name = "Neobuxbaumia polylopha",
+                    Status = "unpublished"
+                },
+                new CatalogItemModel(){
+                    Id = 3,
+                    Name = "Myrtillocactus geometrizans",
+                    Status = "published"
+                },
+            };
+
+            #endregion
+
+            return new OkObjectResult(catalog);
         }
     }
 }

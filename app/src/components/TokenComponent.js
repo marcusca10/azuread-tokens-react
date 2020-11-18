@@ -81,7 +81,7 @@ class TokenComponent extends Component {
         
         if (id === "authScope")
         {
-            this.authService.setGraphTokenScope(value);
+            this.authService.setTokenRequestScope(value);
         }
         
         this.setState({ [id]: value });

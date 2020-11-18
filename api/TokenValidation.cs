@@ -78,6 +78,8 @@ namespace Marcusca10.Samples.AzureAd.TokenFunction
                         var result = tokenHandler.ValidateToken(authHeader.Parameter,
                             _validationParameters, out jwtToken);
 
+
+
                         // If ValidateToken did not throw an exception, token is valid.
                         return new TokenValidationResult(GetMsalAccountId(result), authHeader.Parameter);
                     }
