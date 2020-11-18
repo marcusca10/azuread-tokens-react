@@ -10,14 +10,14 @@ using System.Web.Http;
 
 namespace Marcusca10.Samples.AzureAd.TokenFunction
 {
-    public static class ParseTokenAud1
+    public static class AlpineFlowersCatalog
     {
-        [FunctionName("ParseTokenAud1")]
+        [FunctionName("AlpineFlowersCatalog")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function 'ParseTokenAud1' processed a request.");
+            log.LogInformation("C# HTTP trigger function 'AlpineFlowersCatalog' processed a request.");
 
             #region Token validation
 
@@ -49,19 +49,29 @@ namespace Marcusca10.Samples.AzureAd.TokenFunction
             {
                 new CatalogItemModel(){
                     Id = 1,
-                    Name = "Cephalocereus senilis",
+                    Name = "Leontopodium alpinum",
                     Status = "published"
                 },
                 new CatalogItemModel(){
                     Id = 2,
-                    Name = "Neobuxbaumia polylopha",
+                    Name = "Ajuga reptans",
+                    Status = "published"
+                },
+                new CatalogItemModel(){
+                    Id = 2,
+                    Name = "Gentiana lutea",
                     Status = "unpublished"
                 },
                 new CatalogItemModel(){
                     Id = 3,
                     Name = "Myrtillocactus geometrizans",
-                    Status = "published"
+                    Status = "unpublished"
                 },
+                new CatalogItemModel(){
+                    Id = 3,
+                    Name = "Chamaenerion angustifolium",
+                    Status = "published"
+                }
             };
 
             #endregion
