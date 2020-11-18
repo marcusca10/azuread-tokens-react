@@ -36,7 +36,7 @@ const TokenComponentForm = (props) => {
                   <option value="profile">Just Profile</option>
                   <option value="user">User Consent</option>
                   <option value="all">Everything</option>
-                  <option value="api1">Alpine flowers API</option>
+                  <option value="api1">Herbs API</option>
                   <option value="api2">Cactus API</option>
                 </Form.Control>
               </Col>
@@ -51,8 +51,8 @@ const TokenComponentForm = (props) => {
         <Button variant="primary" onClick={props.profileButton_Click}>Profile</Button>{' '}
         <Button variant="primary" onClick={props.peopleButton_Click}>People</Button>{' '}
         <Button variant="primary" onClick={props.groupsButton_Click}>Groups</Button>{' '}
-        <Button variant="primary" onClick={props.api1Button_Click}>API 1</Button>{' '}
-        <Button variant="primary" onClick={props.api2Button_Click}>API 2</Button>{' '}
+        <Button variant="primary" onClick={props.api1Button_Click}>Herbs API</Button>{' '}
+        <Button variant="primary" onClick={props.api2Button_Click}>Cactus API</Button>{' '}
         <Button variant="primary" onClick={props.signOutButton_Click}>Sign Out</Button>{' '}
 
       </Form>

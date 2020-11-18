@@ -49,16 +49,19 @@ namespace Marcusca10.Samples.AzureAd.TokenFunction
             {
                 new CatalogItemModel(){
                     Id = 1,
+                    CommonName = "Old man cactus",
                     Name = "Cephalocereus senilis",
                     Status = "published"
                 },
                 new CatalogItemModel(){
                     Id = 2,
+                    CommonName = "Cone cactus",
                     Name = "Neobuxbaumia polylopha",
                     Status = "unpublished"
                 },
                 new CatalogItemModel(){
                     Id = 3,
+                    CommonName = "Bilberry cactus",
                     Name = "Myrtillocactus geometrizans",
                     Status = "published"
                 },
