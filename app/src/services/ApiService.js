@@ -8,8 +8,8 @@ export default class ApiService {
         };
 
         return axios.get(endpoint, config).then(
-          (graphResponse) => {
-            return graphResponse;
+          (apiResponse) => {
+            return JSON.stringify(apiResponse.data, undefined, 4);
           }
         );
       }

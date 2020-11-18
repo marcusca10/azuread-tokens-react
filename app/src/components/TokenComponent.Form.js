@@ -36,8 +36,8 @@ const TokenComponentForm = (props) => {
                   <option value="profile">Just Profile</option>
                   <option value="user">User Consent</option>
                   <option value="all">Everything</option>
-                  <option value="api1">API 1</option>
-                  <option value="api2">API 2</option>
+                  <option value="api1">Alpine flowers API</option>
+                  <option value="api2">Cactus API</option>
                 </Form.Control>
               </Col>
             </Form.Group>

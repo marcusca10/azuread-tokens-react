@@ -3,6 +3,12 @@ import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import Table from 'react-bootstrap/Table';
 
+import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
+import json from 'react-syntax-highlighter/dist/esm/languages/hljs/json';
+import github from 'react-syntax-highlighter/dist/esm/styles/hljs/github';
+
+SyntaxHighlighter.registerLanguage('json', json);
+
 const TokenComponentResult = (props) => {
     return (
         <div>
@@ -70,35 +76,12 @@ const TokenComponentResult = (props) => {
                     </Table>
                 </Tab>
                 <Tab eventKey="results" title="Results">
-                    <br></br>
-                    <Table style={{ textAlign: 'left' }} striped hover responsive="sm">
-                        <thead>
-                            <tr className="d-flex">
-                                <th className="col-3">Attribute</th>
-                                <th className="col-9">Value</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                props.resultDetails ? (
-                                    Object.keys(props.resultDetails).map((key) => (
-                                        <tr key={ key } className="d-flex">
-                                            <td className="col-3">{ key }</td>
-                                            <td className="col-9">
-                                                <span className="text-break">
-                                                    { props.resultDetails[key] }
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan="2">No results yet</td>
-                                    </tr>
-                                )
-                            }
-                        </tbody>
-                    </Table>
+                    <div style={{ textAlign: 'left' }}>
+                        <br></br>
+                        <SyntaxHighlighter language="json" style={github}>
+                            { props.resultDetails }
+                        </SyntaxHighlighter>
+                    </div>
                 </Tab>
             </Tabs>
         </div>

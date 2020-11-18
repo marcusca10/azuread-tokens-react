@@ -27,15 +27,15 @@ class TokenComponent extends Component {
             account: null,
             idTokenClaims: null,
             accessTokenDetails: null,
-            resultDetails: null,
+            resultDetails: '',
             msgShow: false,
             msgLevel: 'info',
             msgTitle: '',
             msgText: '',
             graphBaseUrl: process.env.REACT_APP_GRAPH_ENDPOINT,
             profilePath: 'me',
-            peoplePath: 'me',
-            groupsPath: 'me',
+            peoplePath: 'me/people',
+            groupsPath: 'groups',
             api1Url: process.env.REACT_APP_API1_URL,
             api2Url: process.env.REACT_APP_API2_URL,
         };
@@ -173,7 +173,7 @@ class TokenComponent extends Component {
                     this.setState({accessTokenDetails: this.parseTokenResult(authResponse)});
                     //this.setState({account: this.parseTokenResult(authResponse.account)})
                     this.setState({idTokenClaims: this.parseTokenResult(authResponse.idTokenClaims)});
-                    this.setState({resultDetails: null});
+                    this.setState({resultDetails: ''});
                     //this.showMessage('info', 'Success', 'Token received.')
                 }
             },
@@ -190,7 +190,7 @@ class TokenComponent extends Component {
                 this.setState({accessTokenDetails: null});
                 this.setState({account: null});
                 this.setState({idTokenClaims: null});
-                this.setState({resultDetails: null});
+                this.setState({resultDetails: ''});
             },
             (error) => {
                 console.log(error);
@@ -209,10 +209,10 @@ class TokenComponent extends Component {
 
                     this.apiService.fetchData(endpoint, authResponse.accessToken).then(
                         (apiResponse) => {
-                            this.setState({resultDetails: this.parseTokenResult(apiResponse.data)});
+                            this.setState({resultDetails: apiResponse});
                         },
                         (err) => {
-                            this.setState({resultDetails: null});
+                            this.setState({resultDetails: ''});
                             this.showMessage('danger', 'Error', err.message)
                             console.log(err);
                         }
@@ -221,7 +221,7 @@ class TokenComponent extends Component {
             },
             (error) => {
                 this.setState({accessTokenDetails: null});
-                this.setState({resultDetails: null});
+                this.setState({resultDetails: ''});
                 this.showMessage('danger', 'Error', error.message)
                 console.log(error);
             }
