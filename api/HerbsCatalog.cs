@@ -23,7 +23,7 @@ namespace Marcusca10.Samples.AzureAd.TokenFunction
 
             // Check configuration
             if (string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("AZUREAD_AUDIENCE1")) ||
-                string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("AZUREAD_TENANT")))
+                string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("AZUREAD_AUTHORIZED_TENANTS")))
             {
                 log.LogError("Invalid app settings configured");
                 return new InternalServerErrorResult();
@@ -31,7 +31,7 @@ namespace Marcusca10.Samples.AzureAd.TokenFunction
 
             // Validate the bearer token
             var validationResult = await TokenValidation.ValidateAuthorizationHeader(
-                req, System.Environment.GetEnvironmentVariable("AZUREAD_TENANT"), System.Environment.GetEnvironmentVariable("AZUREAD_AUDIENCE1"), log);
+                req, System.Environment.GetEnvironmentVariable("AZUREAD_AUTHORIZED_TENANTS"), System.Environment.GetEnvironmentVariable("AZUREAD_AUDIENCE1"), log);
 
             // If token wasn't returned it isn't valid
             if (validationResult == null)

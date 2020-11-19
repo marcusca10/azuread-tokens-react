@@ -7,6 +7,7 @@ using System;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Marcusca10.Samples.AzureAd.TokenFunction
@@ -33,7 +34,7 @@ namespace Marcusca10.Samples.AzureAd.TokenFunction
         private static TokenValidationParameters _validationParameters = null;
         public static async Task<TokenValidationResult> ValidateAuthorizationHeader(
             HttpRequest request,
-            string tenantId,
+            string authorizedTenants,
             string expectedAudience,
             ILogger log)
         {
@@ -50,8 +51,9 @@ namespace Marcusca10.Samples.AzureAd.TokenFunction
                     {
                         // Load the tenant-specific OpenID config from Azure
                         var configManager = new ConfigurationManager<OpenIdConnectConfiguration>(
-                        $"https://login.microsoftonline.com/{tenantId}/.well-known/openid-configuration",
-                        new OpenIdConnectConfigurationRetriever());
+                            "https://login.microsoftonline.com/organizations/v2.0/.well-known/openid-configuration",
+                            new OpenIdConnectConfigurationRetriever()
+                        );
 
                         var config = await configManager.GetConfigurationAsync();
 
@@ -62,9 +64,10 @@ namespace Marcusca10.Samples.AzureAd.TokenFunction
                             ValidateAudience = true,
                             // Audience MUST be the app ID for the Web API
                             ValidAudience = expectedAudience,
-                            ValidateIssuer = true,
+                            // Multitenant support
+                            ValidateIssuer = false,
                             // Use the issuer retrieved from Azure
-                            ValidIssuer = config.Issuer,
+                            //ValidIssuer = config.Issuer,
                             ValidateLifetime = true
                         };
                     }
@@ -78,6 +81,18 @@ namespace Marcusca10.Samples.AzureAd.TokenFunction
                         var result = tokenHandler.ValidateToken(authHeader.Parameter,
                             _validationParameters, out jwtToken);
 
+                        // Multitenant support: validate authorized tenants
+                        log.Log(LogLevel.Information, $"The token was issued by: {jwtToken.Issuer}.");
+
+                        // Issuer comes in the format: https://sts.windows.net/{tenant GUID}/
+                        var regex = new Regex(@"\*([a-fA-f\d]{8}-[a-fA-f\d]{4}-[a-fA-f\d]{4}-[a-fA-f\d]{4}-[a-fA-f\d]{12})");
+                        var match = regex.Match(jwtToken.Issuer);
+
+                        if (match.Success)
+                            if (!authorizedTenants.Contains(match.Groups[1].Value))
+                                throw new Exception($"The tenant {match.Groups[1]} is not authorized to use the API.");
+                        else
+                            throw new Exception($"No tenant information found for issuer: {jwtToken.Issuer}.");
 
 
                         // If ValidateToken did not throw an exception, token is valid.
@@ -85,7 +100,7 @@ namespace Marcusca10.Samples.AzureAd.TokenFunction
                     }
                     catch (Exception exception)
                     {
-                        log.LogError(exception, "Error validating bearer token");
+                        log.LogError(exception, "Error validating bearer token.");
                     }
                 }
             }
