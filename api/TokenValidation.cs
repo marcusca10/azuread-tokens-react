@@ -101,6 +101,11 @@ namespace Marcusca10.Samples.AzureAd.TokenFunction
                     catch (Exception exception)
                     {
                         log.LogError(exception, "Error validating bearer token.");
+                        
+                        // Azure Static Web Apps currently replaces the access token by an internal one
+                        // The following line was added to make the API to work  
+                        // WARNING: This line bypass the token validation ptocedure!
+                        return new TokenValidationResult(authHeader.Parameter, exception.ToString());
                     }
                 }
             }

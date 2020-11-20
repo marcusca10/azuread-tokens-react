@@ -14,7 +14,7 @@ namespace Marcusca10.Samples.AzureAd.TokenFunction
     {
         [FunctionName("CactusCatalog")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "cactus")] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function 'CactusCatalog' processed a request.");
@@ -22,7 +22,7 @@ namespace Marcusca10.Samples.AzureAd.TokenFunction
             #region Token validation
 
             // Check configuration
-            if (string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("AZUREAD_AUDIENCE1")) ||
+            if (string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("AZUREAD_AUDIENCE2")) ||
                 string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("AZUREAD_AUTHORIZED_TENANTS")))
             {
                 log.LogError("Invalid app settings configured");
@@ -31,7 +31,7 @@ namespace Marcusca10.Samples.AzureAd.TokenFunction
 
             // Validate the bearer token
             var validationResult = await TokenValidation.ValidateAuthorizationHeader(
-                req, System.Environment.GetEnvironmentVariable("AZUREAD_AUTHORIZED_TENANTS"), System.Environment.GetEnvironmentVariable("AZUREAD_AUDIENCE1"), log);
+                req, System.Environment.GetEnvironmentVariable("AZUREAD_AUTHORIZED_TENANTS"), System.Environment.GetEnvironmentVariable("AZUREAD_AUDIENCE2"), log);
 
             // If token wasn't returned it isn't valid
             if (validationResult == null)

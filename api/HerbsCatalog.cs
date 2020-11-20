@@ -14,7 +14,7 @@ namespace Marcusca10.Samples.AzureAd.TokenFunction
     {
         [FunctionName("HerbsCatalog")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "herbs")] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function 'HerbsCatalog' processed a request.");
