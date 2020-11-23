@@ -11,7 +11,7 @@ Login with your GitHub credentials and click on the `fork` button to create a re
 
 ## Run it on Azure Static Web Apps
 
-> **NOTE:** The application will not work after the first deployment, some information is required before the Azure AD application is created.
+> **NOTE:** The application will not work after the first deployment, some additional information from the Azure deployment are required before being able to create the Azure AD application.
 
 In the project directory, you can run:
 
@@ -22,6 +22,10 @@ This is used to setup the GitHub Actions workflow file and API secrets required 
 > **NOTE:** Treat your tokens like passwords and keep them secret.
 
 Follow the steps described here to create the token [Creating a personal access token](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token)
+
+Select 'workflows' under scopes, all the required permissions are automatically selected.
+
+![PAT scopes](/docs/readme-pat.png)
 
 ### Deploy to Azure
 
@@ -37,7 +41,7 @@ Repository Token | The GitHub PAT token created earlier.
 
 ![Azure deployment](/docs/readme-deploy.png)
 
-After the template validation, click the `Create` button. When the deployment finishes click on `Go to resource group`.
+After the template validation, click the `Create` button. When the deployment finishes click on `Go to resource`.
 
 In the repository click the link for the Static Web App, you will need to grab some information about you application. Copy the value for URL: i.e. https://delightful-water-012345678.azurestaticapps.net.
 
@@ -73,7 +77,7 @@ You will need to update environment variables for the client app, find the file 
 Enter the Client Id (Application ID obtained from the Azure portal):
 
 ```
-REACT_APP_MSAL_CLIENT_ID=ba74781c2-53c2-442a-97c2-3d60re42f403
+REACT_APP_MSAL_CLIENT_ID=ba74781c2-53c2-442a-97c2-3d60re42e423
 ```
 
 Click `Commit changes`.
@@ -89,7 +93,7 @@ New registration
 * Name: 'Tokens Demo {__Herbs/Cactus__} API'. 
 * Select 'Accounts in this organizational directory only (O365 MCANET only - Single tenant)'.
 
-Select the `Expose an API` tab and click `Add a scope`. Use the Static Web Site URL plus the suffix for the API your exposing (`/api/HerbsCatalog` or `/api/CactusCatalog`) as `Application ID URI` (i.e. https://delightful-water-012345678.azurestaticapps.net/api/HerbsCatalog).
+Select the `Expose an API` tab and click `Add a scope`. Use the Static Web Site URL plus the suffix for the API your exposing (`/api/herbs` or `/api/cactus`) as `Application ID URI` (i.e. https://delightful-water-012345678.azurestaticapps.net/api/herbs).
 
 Use the following table to add a scope to the API:
 
@@ -103,7 +107,7 @@ User consent display name | Read your catalog items
 User consent description | Allows the app to read your catalog items.
 State | Enabled
 
-Copy the value for the created scope (i.e. https://delightful-water-012345678.azurestaticapps.net/api/HerbsCatalog/Catalog.View.All)
+Copy the value for the created scope (i.e. https://delightful-water-012345678.azurestaticapps.net/api/herbs/Catalog.View.All)
 
 #### Update the Azure Function Configuration 
 
@@ -112,8 +116,8 @@ Open the Static Web App in the Azure Portal. Select the `Configuration` tab and 
 Name | Description | Sample value
 ---- | ----------- | ------------
 AZUREAD_AUTHORIZED_TENANTS | Your tenant ID | 5453406a-87cf-4d32-8167-e5959fafafaa
-AZUREAD_AUDIENCE1 | The registered app ID for the Herbs Catalog API | https://delightful-water-012345678.azurestaticapps.net/api/HerbsCatalog
-AZUREAD_AUDIENCE2 | The registered app ID for the Herbs Catalog API | https://delightful-water-012345678.azurestaticapps.net/api/CactusCatalog
+AZUREAD_AUDIENCE1 | The registered app ID for the Herbs Catalog API | https://delightful-water-012345678.azurestaticapps.net/api/herbs
+AZUREAD_AUDIENCE2 | The registered app ID for the Cactus Catalog API | https://delightful-water-012345678.azurestaticapps.net/api/cactus
 
 Click `Save` when you finished.
 
@@ -122,27 +126,27 @@ Click `Save` when you finished.
 Open your GitHub repository fork (i.e. https://github.com/{your GitHub account}/azuread-tokens-react
 You will need to update environment variables for the client app, find the file `/app/.env`. Click the `edit` button and change the following values:
 
-The Azure Static Web Site URL plus the Herbs API path `/api/HerbsCatalog`.
+The Azure Static Web Site URL plus the Herbs API path `/api/herbs`.
 ```
-REACT_APP_API1_URL=https://delightful-water-09fb95b03.azurestaticapps.net/api/herbs
+REACT_APP_API1_URL=https://delightful-water-012345678.azurestaticapps.net/api/herbs
 ```
 
 The scope you created for the Herbs API.
 
 ```
-REACT_APP_API1_SCOPE=https://delightful-water-09fb95b03.azurestaticapps.net/api/HerbsCatalog/Catalog.View.All
+REACT_APP_API1_SCOPE=https://delightful-water-012345678.azurestaticapps.net/api/herbs/Catalog.View.All
 ```
 
-The Azure Static Web Site URL plus the Cactus API path `/api/CactusCatalog`.
+The Azure Static Web Site URL plus the Cactus API path `/api/cactus`.
 
 ```
-REACT_APP_API2_URL=https://delightful-water-09fb95b03.azurestaticapps.net/api/cactus
+REACT_APP_API2_URL=https://delightful-water-012345678.azurestaticapps.net/api/cactus
 ```
 
 The scope you created for the Cactus API.
 
 ```
-REACT_APP_API2_SCOPE=https://delightful-water-09fb95b03.azurestaticapps.net/api/CactusCatalog/Catalog.View.All
+REACT_APP_API2_SCOPE=https://delightful-water-012345678.azurestaticapps.net/api/cactus/Catalog.View.All
 ```
 
 Click `Commit changes`.
