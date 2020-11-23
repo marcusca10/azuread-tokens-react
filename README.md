@@ -1,70 +1,150 @@
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmarcusca10%2Fazuread-tokens-react%2Fmain%2Fazuredeploy.json)
+# Azure AD Tokens Demo
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) and [Create a C# function in Azure from the command line](https://docs.microsoft.com/en-us/azure/azure-functions/create-first-function-cli-csharp).
 
-## Available Scripts
+The [Microsoft Authentication Library for JavaScript (MSAL.js)](https://github.com/AzureAD/microsoft-authentication-library-for-js) implementation is based on the following article: 
+[Sign in users and call the Microsoft Graph API from a JavaScript single-page app (SPA) using auth code flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/tutorial-v2-javascript-auth-code).
+
+Login with your GitHub credentials and click on the `fork` button to create a repository for under your account.
+
+![GitHub Fork](/docs/readme-fork.png)
+
+## Run it on Azure Static Web Apps
+
+> **NOTE:** The application will not work after the first deployment, some information is required before the Azure AD application is created.
 
 In the project directory, you can run:
 
-### `npm start`
+### Create a GitHub Personal Access Token (PAT)
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This is used to setup the GitHub Actions workflow file and API secrets required to deploy the app code to Azure Static Web Apps.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+> **NOTE:** Treat your tokens like passwords and keep them secret.
 
-### `npm test`
+Follow the steps described here to create the token [Creating a personal access token](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Deploy to Azure
 
-### `npm run build`
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmarcusca10%2Fazuread-tokens-react%2Fmain%2Fazuredeploy.json)
+
+Login with the Azure account in the subscription you want to deploy the application. In the custom deployment page fill in the parameters to create the Azure Static Web App.
+
+Parameter | Description
+--------- | -----------
+Name | The name of the static site to create (i.e. my-react-demo).
+Repository Url | The URL for the FORKED repository (i.e. https://github.com/{your GitHub account} /azuread-tokens-react).
+Repository Token | The GitHub PAT token created earlier.
+
+![Azure deployment](/docs/readme-deploy.png)
+
+After the template validation, click the `Create` button. When the deployment finishes click on `Go to resource group`.
+
+In the repository click the link for the Static Web App, you will need to grab some information about you application. Copy the value for URL: i.e. https://delightful-water-012345678.azurestaticapps.net.
+
+![Azure Static App](/docs/readme-staticapp.png)
+
+## Create Azure AD Applications
 
 Builds the app for production to the `build` folder.<br />
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### Client Application
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+New app registration:
 
-### `npm run eject`
+* Give the app a name: Tokens Demo React.
+* Select 'Accounts in this organizational directory only (O365 MCANET only - Single tenant)'.
+* Write down the value for the 'Application (client) ID'.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Configure authentication: 
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Select the 'Authentication' tab and click 'Add a platform':
+1. Select 'Single-page application'
+1. Paste the app URL from your deployment in the 'Redirect URIs' field.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+![SPA](/docs/readme-spa.png)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+#### Update the Client App 
 
-## Learn More
+Open your GitHub repository fork (i.e. https://github.com/{your GitHub account}/azuread-tokens-react
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+You will need to update environment variables for the client app, find the file `/app/.env`. Click the `edit` button and change the following values:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Enter the Client Id (Application ID obtained from the Azure portal):
 
-### Code Splitting
+```
+REACT_APP_MSAL_CLIENT_ID=ba74781c2-53c2-442a-97c2-3d60re42f403
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+Click `Commit changes`.
 
-### Analyzing the Bundle Size
+> **NOTE:** Commit triggers a GitHub workflow that updates the deployed Azure Static Web App with the updated values.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+### API Applications
 
-### Making a Progressive Web App
+> **NOTE:** The sample uses two different APIs as resources: Herbs Catalog and Cactus Catalog. You need to create an app registration for each of them.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+New registration
 
-### Advanced Configuration
+* Name: 'Tokens Demo {__Herbs/Cactus__} API'. 
+* Select 'Accounts in this organizational directory only (O365 MCANET only - Single tenant)'.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+Select the `Expose an API` tab and click `Add a scope`. Use the Static Web Site URL plus the suffix for the API your exposing (`/api/HerbsCatalog` or `/api/CactusCatalog`) as `Application ID URI` (i.e. https://delightful-water-012345678.azurestaticapps.net/api/HerbsCatalog).
 
-### Deployment
+Use the following table to add a scope to the API:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+Parameter | Value
+--------- | -----
+Scope name | Catalog.View.All
+Who can consent? | Admins and users
+Admin consent display name | Read catalog items
+Admin consent description | Allows the app to read the signed-in user's catalog items.
+User consent display name | Read your catalog items
+User consent description | Allows the app to read your catalog items.
+State | Enabled
 
-### `npm run build` fails to minify
+Copy the value for the created scope (i.e. https://delightful-water-012345678.azurestaticapps.net/api/HerbsCatalog/Catalog.View.All)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+#### Update the Azure Function Configuration 
+
+Open the Static Web App in the Azure Portal. Select the `Configuration` tab and click the `Add` button, repeat the steps for each of the values in the following table:
+
+Name | Description | Sample value
+---- | ----------- | ------------
+AZUREAD_AUTHORIZED_TENANTS | Your tenant ID | 5453406a-87cf-4d32-8167-e5959fafafaa
+AZUREAD_AUDIENCE1 | The registered app ID for the Herbs Catalog API | https://delightful-water-012345678.azurestaticapps.net/api/HerbsCatalog
+AZUREAD_AUDIENCE2 | The registered app ID for the Herbs Catalog API | https://delightful-water-012345678.azurestaticapps.net/api/CactusCatalog
+
+Click `Save` when you finished.
+
+#### Update the Client App 
+
+Open your GitHub repository fork (i.e. https://github.com/{your GitHub account}/azuread-tokens-react
+You will need to update environment variables for the client app, find the file `/app/.env`. Click the `edit` button and change the following values:
+
+The Azure Static Web Site URL plus the Herbs API path `/api/HerbsCatalog`.
+```
+REACT_APP_API1_URL=https://delightful-water-09fb95b03.azurestaticapps.net/api/herbs
+```
+
+The scope you created for the Herbs API.
+
+```
+REACT_APP_API1_SCOPE=https://delightful-water-09fb95b03.azurestaticapps.net/api/HerbsCatalog/Catalog.View.All
+```
+
+The Azure Static Web Site URL plus the Cactus API path `/api/CactusCatalog`.
+
+```
+REACT_APP_API2_URL=https://delightful-water-09fb95b03.azurestaticapps.net/api/cactus
+```
+
+The scope you created for the Cactus API.
+
+```
+REACT_APP_API2_SCOPE=https://delightful-water-09fb95b03.azurestaticapps.net/api/CactusCatalog/Catalog.View.All
+```
+
+Click `Commit changes`.
+
+> **NOTE:** This commit triggers a GitHub workflow that update the deployed Azure Static Web Site with the updated values.
