@@ -22,7 +22,7 @@ class TokenComponent extends Component {
             authEndpoint: this.authBaseUrl + 'organizations',
             tenant: '{type the tenant id}',
             accountType: 'all',
-            authScope: '',
+            authScope: '.default',
             signinScope: 'profile',
             account: null,
             idTokenClaims: null,
@@ -110,14 +110,14 @@ class TokenComponent extends Component {
             case 'all':
                 authScope = 'user.read people.read group.read.all';
                 break;
-                case 'api1':
-                    authScope = process.env.REACT_APP_API1_SCOPE;
-                    break;
-                case 'api2':
-                    authScope = process.env.REACT_APP_API2_SCOPE;
-                    break;
-                default:
-                authScope = '';
+            case 'api1':
+                authScope = process.env.REACT_APP_API1_SCOPE;
+                break;
+            case 'api2':
+                authScope = process.env.REACT_APP_API2_SCOPE;
+                break;
+            default:
+                authScope = '.default';
         }
         this.setState({ authScope: authScope});
 
