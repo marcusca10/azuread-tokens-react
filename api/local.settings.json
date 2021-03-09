@@ -1,0 +1,19 @@
+{
+  "exclude": [
+    "**/bin",
+    "**/bower_components",
+    "**/jspm_packages",
+    "**/node_modules",
+    "**/obj",
+    "**/platforms"
+  ],
+  "Host": {
+    "CORS": "*"
+  },
+  "IsEncrypted": false,
+  "Values": {
+    "AZUREAD_AUTHORIZED_TENANTS": "[Your tenant ID]",
+    "AZUREAD_AUDIENCE1": "[The registered app ID for the Herbs Catalog API]",
+    "AZUREAD_AUDIENCE2": "[The registered app ID for the Cactus Catalog API]"
+  }
+}

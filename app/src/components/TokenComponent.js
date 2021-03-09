@@ -213,7 +213,23 @@ class TokenComponent extends Component {
                         },
                         (err) => {
                             this.setState({resultDetails: ''});
-                            this.showMessage('danger', 'Error', err.message)
+                            var message = err.message;
+                            if (err.response) {
+                                switch (err.response.status) {
+                                    case 403:
+                                        message = message + ', verify that you selected the right scope to call the API!';
+                                        break;
+                                    case 500:
+                                        message =  message + ', did you remember to update the Azure Function Configuration?';
+                                        break;
+                                    default:
+                                        break;
+                                    }
+                            }
+                            else {
+                                message = err.message === 'Network Error' ? message + ', did you remember to configure CORS for the Azure Function?' : message;
+                            }
+                            this.showMessage('danger', 'Error', message)
                             console.log(err);
                         }
                     )
